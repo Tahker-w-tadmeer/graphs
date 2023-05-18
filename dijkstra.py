@@ -1,4 +1,4 @@
-from graph_v2 import Graph
+from graph import Graph
 import sys
 
 
