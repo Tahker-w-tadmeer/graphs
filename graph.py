@@ -30,16 +30,13 @@ class LinkedList:
             temp = temp.next
 
 
-# representation of graph using linked lists
 class Graph:
-    def __init__(self, no_vertices, directed=True):
+    def __init__(self, no_vertices: int, directed=True):
         self.no_vertices = no_vertices
-        self.vertices_list = [LinkedList() for i in range(0, no_vertices)]  # create a list to represent the graph
+        self.vertices_list = [LinkedList() for _ in range(0, no_vertices)]  # create a list to represent the graph
         self.directed = directed
 
-        # insert an edge in the graph
-
-    def insert_edge(self, edge, weight):
+    def insert_edge(self, edge: (int, int), weight: int):
         vertex1, vertex2 = edge
         if (0 <= vertex1 < self.no_vertices) and (0 <= vertex2 < self.no_vertices):
             # add an edge from vertex1 to vertex2
@@ -49,19 +46,18 @@ class Graph:
         else:
             raise ValueError("Invalid vertices")
 
-    def get_outgoing_edges(self, node):
-        "Returns the neighbors of a node."
+    def get_outgoing_edges(self, vertex: int):
+        """Returns the neighbors of a node."""
+        linked_list = self.vertices_list[vertex]
+        node = linked_list.head
         connections = []
-        for out_node in self.vertices_list:
-            if self.vertices_list[node].head:
-                connections.append(out_node)
+        while node:
+            connections.append(node)
+            node = node.next
         return connections
 
-    # display the graph
     def display_graph(self):
         for i in range(0, self.no_vertices):
             print(i, end="\t")
             self.vertices_list[i].traverse()
             print("None")
-
-        print("\n")

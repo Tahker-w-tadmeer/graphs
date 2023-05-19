@@ -3,16 +3,13 @@ import sys
 
 
 class Dijkstra:
+
     @staticmethod
-    #  def calculate(graph: Graph):
-    #     pass
-    def dijkstra_algorithm(graph, start_node):
-
-        unvisited_nodes = list(graph.vertices_list)
-
+    def calculate(graph, start_node) -> Graph:
+        unvisited_nodes = list(range(0, graph.no_vertices))
+        answer = Graph(graph.no_vertices, directed=True)
         # We'll use this dict to save the cost of visiting each node and update it as we move along the graph
         shortest_path = {}
-
         # We'll use this dict to save the shortest known path to a node found so far
         previous_nodes = {}
 
@@ -36,13 +33,17 @@ class Dijkstra:
             # The code block below retrieves the current node's neighbors and updates their distances
             neighbors = graph.get_outgoing_edges(current_min_node)
             for neighbor in neighbors:
-                tentative_value = shortest_path[current_min_node] + graph.value(current_min_node, neighbor)
-                if tentative_value < shortest_path[neighbor]:
-                    shortest_path[neighbor] = tentative_value
+                tentative_value = shortest_path[current_min_node] + neighbor.weight
+                if tentative_value < shortest_path[neighbor.vertex]:
+                    shortest_path[neighbor.vertex] = tentative_value
                     # We also update the best path to the current node
-                    previous_nodes[neighbor] = current_min_node
+                    previous_nodes[neighbor.vertex] = (current_min_node, neighbor.vertex, tentative_value)
 
-                # After visiting its neighbors, we mark the node as "visited"
+            # After visiting its neighbors, we mark the node as "visited"
             unvisited_nodes.remove(current_min_node)
 
-            return previous_nodes, shortest_path
+        for i in previous_nodes:
+            vertex1, vertex2, weight = previous_nodes[i]
+            answer.insert_edge((vertex1, vertex2), weight)
+
+        return answer
